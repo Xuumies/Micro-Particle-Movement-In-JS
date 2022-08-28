@@ -58,8 +58,8 @@
                         fy += (F * dy)
                     }
                 }
-                a.vx = (a.vx + fx) * 0.7
-                a.vy = (a.vy + fy) * 0.7
+                a.vx = (a.vx + fx) * 0.2
+                a.vy = (a.vy + fy) * 0.2
                 a.x += a.vx
                 a.y += a.vy
                 if (a.x <= 0 || a.x >= 750) { a.vx *= -1 }
@@ -67,12 +67,14 @@
             }
         }
 
+        let randNum = () => Math.floor(Math.random() * (-100 - 10) + 10) / 100;
+
         //particle amounts
         //WARNING: higher values reduce framerate,
         //300 is the max recommended value
-        yellow = create(300, "yellow")
+        yellow = create(100, "yellow")
         red = create(300, "red")
-        blue = create(300, "blue")
+        blue = create(100, "blue")
         green = create(300, "green")
 
         //contain and update particle physics on screen
@@ -84,28 +86,28 @@
             //(unless you want to)
 
             //start yellow
-            rule(yellow, yellow, -0.2)
-            rule(yellow, red, -0.3)
-            rule(yellow, blue, 0.51)
-            rule(yellow, green, -0.75)
+            rule(yellow, yellow, randNum())
+            rule(yellow, red, randNum())
+            rule(yellow, blue, randNum())
+            rule(yellow, green, randNum())
 
             //start red
-            rule(red, yellow, 0.65)
-            rule(red, red, -0.61)
-            rule(red, blue, -1)
-            rule(red, green, -1)
+            rule(red, yellow, randNum())
+            rule(red, red, randNum())
+            rule(red, blue, randNum())
+            rule(red, green, randNum())
 
             // start blue
-            rule(blue, yellow, 1)
-            rule(blue, red, -0.87)
-            rule(blue, blue, -0.2)
-            rule(blue, green, -1)
+            rule(blue, yellow, randNum())
+            rule(blue, red, randNum())
+            rule(blue, blue, randNum())
+            rule(blue, green, randNum())
 
             //start green
-            rule(green, yellow, 1)
-            rule(green, red, -1)
-            rule(green, blue, -0.2)
-            rule(green, green, -0.2)
+            rule(green, yellow, randNum())
+            rule(green, red, randNum())
+            rule(green, blue, randNum())
+            rule(green, green, randNum())
             m.clearRect(0, 0, 1000, 1000)
             draw(0, 0, "black", 1000)
             for (i = 0; i < particles.length; i++) {
@@ -115,6 +117,11 @@
         }
         //call function so it actually does stuff
         update();
+        console.log(randNum())
+        console.log(randNum())
+        console.log(randNum())
+        console.log(randNum())
+        console.log(randNum())
     </script>
 </body>
 
