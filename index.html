@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+    <!-- particle container -->
+    <canvas id="life" width="750" height="750"></canvas>
+
+    <!-- encapsulation begins here -->
+    <script>
+        m = document.getElementById('life').getContext('2d')
+        draw = (x, y, c, s) => {
+            m.fillStyle = c
+            m.fillRect(x, y, s, s)
+        }
+
+        //initialize particles
+        particles = []
+        particle = (x, y, c) => {
+            return { "x": x, "y": y, "vx": 0, "vy": 0, "color": c }
+        }
+
+        //particle placement (* [placed where] + [spacing])
+        random = () => { return Math.random() * 750 + 50 }
+
+        //initialize particle amount and color function
+        create = (number, color) => {
+            group = []
+            for (let i = 0; i < number; i++) {
+                group.push(particle(random(), random(), color))
+                particles.push(group[i])
+            }
+            return group
+        }
+
+        //initialize particle physics function
+        rule = (particles1, particles2, g) => {
+            for (let i = 0; i < particles1.length; i++) {
+                fx = 0
+                fy = 0
+                for (let j = 0; j < particles2.length; j++) {
+                    a = particles1[i]
+                    b = particles2[j]
+                    dx = a.x - b.x
+                    dy = a.y - b.y
+                    d = Math.sqrt(dx * dx + dy * dy)
+                    if (d > 0 && d < 80) {
+                        F = g * 1 / d
+                        fx += (F * dx)
+                        fy += (F * dy)
+                    }
+                }
+                a.vx = (a.vx + fx) * 0.7
+                a.vy = (a.vy + fy) * 0.7
+                a.x += a.vx
+                a.y += a.vy
+                if (a.x <= 0 || a.x >= 750) { a.vx *= -1 }
+                if (a.y <= 0 || a.y >= 750) { a.vy *= -1 }
+            }
+        }
+
+        //particle amounts
+        //WARNING: higher values reduce framerate,
+        //300 is the max recommended value
+        yellow = create(300, "yellow")
+        red = create(300, "red")
+        blue = create(300, "blue")
+        green = create(300, "green")
+
+        //contain and update particle physics on screen
+        update = () => {
+
+            //negative value = attraction
+            //positive value = repulsion
+            //To not break physics keep values between 1 & -1 
+            //(unless you want to)
+
+            //start yellow
+            rule(yellow, yellow, -0.2)
+            rule(yellow, red, -0.3)
+            rule(yellow, blue, 0.51)
+            rule(yellow, green, -0.75)
+
+            //start red
+            rule(red, yellow, 0.65)
+            rule(red, red, -0.61)
+            rule(red, blue, -1)
+            rule(red, green, -1)
+
+            // start blue
+            rule(blue, yellow, 1)
+            rule(blue, red, -0.87)
+            rule(blue, blue, -0.2)
+            rule(blue, green, -1)
+
+            //start green
+            rule(green, yellow, 1)
+            rule(green, red, -1)
+            rule(green, blue, -0.2)
+            rule(green, green, -0.2)
+            m.clearRect(0, 0, 1000, 1000)
+            draw(0, 0, "black", 1000)
+            for (i = 0; i < particles.length; i++) {
+                draw(particles[i].x, particles[i].y, particles[i].color, 5)
+            }
+            requestAnimationFrame(update)
+        }
+        //call function so it actually does stuff
+        update();
+    </script>
+</body>
+
+</html>
