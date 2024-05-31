@@ -12,7 +12,7 @@
 <body>
 
     <!-- particle container -->
-    <canvas id="life" width="750" height="750"></canvas>
+    <canvas id="life" width="1200" height="1200"></canvas>
 
     <!-- encapsulation begins here -->
     <script>
@@ -70,10 +70,10 @@
         //particle amounts
         //WARNING: higher values reduce framerate,
         //300 is the max recommended value
-        yellow = create(300, "yellow")
-        red = create(300, "red")
-        blue = create(300, "blue")
-        green = create(300, "green")
+        yellow = create(1000, "yellow")
+        red = create(1000, "red")
+        blue = create(1000, "blue")
+        green = create(1000, "green")
 
         //contain and update particle physics on screen
         update = () => {
